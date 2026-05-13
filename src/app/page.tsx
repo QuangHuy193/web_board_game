@@ -1,5 +1,5 @@
-import Header from "@/components/homePage/Header";
 import Welcome from "@/components/homePage/Welcome";
+import Button from "@/components/ui/Button";
 
 export default function Home() {
   return (
@@ -10,7 +10,9 @@ export default function Home() {
       }}
     >
       <div className="fixed top-3 right-3">
-        <Header />
+        <Button variant="primary" size="sm" scale={105}>
+          Đăng nhập
+        </Button>
       </div>
       <div className=" min-h-screen flex items-center justify-center">
         <Welcome />

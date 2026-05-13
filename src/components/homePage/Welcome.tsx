@@ -1,6 +1,21 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import Button from "../ui/Button";
 
 const Welcome = () => {
+  const router = useRouter();
+
+  const handleStart = () => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      router.push("/main");
+    } else {
+      //TODO hiện toast dạng thông tin khuyên đăng nhập
+      router.push("/main");
+    }
+  };
   return (
     <div
       className="
@@ -37,6 +52,7 @@ const Welcome = () => {
 
       {/* Button */}
       <Button
+        onClick={handleStart}
         scale={110}
         variant="ghost"
         size="lg"
