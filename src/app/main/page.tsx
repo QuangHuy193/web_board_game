@@ -1,13 +1,9 @@
-"use client";
 import Header from "@/components/mainPage/Header";
 import MenuGame from "@/components/mainPage/MenuGame";
-import PuzzleBoard from "@/components/puzzle/PuzzleBoard";
-import { useState } from "react";
 
 export default function Main() {
-  const [number1, setNumber1] = useState(3);
   return (
-    <div>
+    <div className="h-screen bg-[url('/bg_main.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="sticky">
         <Header />
       </div>
@@ -15,10 +11,6 @@ export default function Main() {
       <div>
         <MenuGame />
       </div>
-      <button onClick={() => setNumber1((prev) => prev + 1)}>+</button>
-      {number1}
-      <button onClick={() => setNumber1((prev) => prev - 1)}>-</button>
-      <PuzzleBoard size={number1} />
     </div>
   );
 }

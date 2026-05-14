@@ -1,4 +1,4 @@
-import { PuzzlePiece } from "@/types/propType";
+import { PuzzlePiece } from "@/types/type";
 
 // hàm đảo ô cho game xếp hình
 const shufflePieces = (pieces: PuzzlePiece[]): PuzzlePiece[] => {

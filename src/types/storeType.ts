@@ -1,18 +1,16 @@
+import { Game, GameConfig } from "./modelType";
+
 // useGameStore
-// game in db
-export type Game = {
-  id: string;
-  name: string;
-  image: string;
-};
-
-//
 export type GameStore = {
-  games: Game[];
+  games: Game[]; // danh sách game từ db
 
-  isLoadingGames: boolean;
+  isLoadingGames: boolean; // đang tải ds game
 
-  currentGame: Game | null;
+  currentGame: Game | null; // game đang được chọn
 
-  fetchGames: () => Promise<void>;
+  selectedGameConfig: GameConfig | null; // chọn độ khó
+
+  fetchGames: () => Promise<void>; // lấy ds game từ db
+
+  setCurrentGame: (game: Game | null) => void;
 };

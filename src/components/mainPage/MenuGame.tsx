@@ -1,17 +1,18 @@
 "use client";
 
 import { useGameStore } from "@/stores/useGameStore";
-import { Game } from "@/types/storeType";
+import { Game } from "@/types/modelType";
 import { useEffect } from "react";
 import GameItem from "./GameItem";
+import MenuGameDif from "./MenuGameDif";
 
 const MenuGame = () => {
-  const { games, isLoadingGames, fetchGames } = useGameStore();
+  const { games, isLoadingGames, fetchGames, currentGame } = useGameStore();
 
   useEffect(() => {
     fetchGames();
   }, [fetchGames]);
-
+console.log(currentGame);
   return (
     <div>
       {isLoadingGames ? (
@@ -23,6 +24,10 @@ const MenuGame = () => {
           {games.map((game: Game) => (
             <div key={game.id} className="flex justify-center">
               <GameItem game={game} />
+              {
+                
+                currentGame && <MenuGameDif gameDiffs={currentGame.configs}/>
+              }
             </div>
           ))}
         </div>

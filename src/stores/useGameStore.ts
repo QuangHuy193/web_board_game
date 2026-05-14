@@ -9,6 +9,8 @@ export const useGameStore = create<GameStore>((set) => ({
 
   currentGame: null,
 
+  selectedGameConfig: null,
+
   fetchGames: async () => {
     try {
       set({
@@ -28,4 +30,5 @@ export const useGameStore = create<GameStore>((set) => ({
       });
     }
   },
+  setCurrentGame: (game) => set({ currentGame: game }),
 }));

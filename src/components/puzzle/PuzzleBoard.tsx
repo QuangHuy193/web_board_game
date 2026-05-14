@@ -1,6 +1,11 @@
 import { createPieces } from "@/libs/function";
-import { PuzzleBoardProps, PuzzlePiece } from "@/types/propType";
+import { PuzzlePiece } from "@/types/type";
 import { useRef, useState } from "react";
+
+export type PuzzleBoardProps = {
+  size?: number;
+  imageSrc?: string;
+};
 
 const PuzzleBoard = ({
   size = 3,

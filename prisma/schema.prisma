@@ -53,7 +53,7 @@ model GameConfig {
 
   coin     Int
 
-  config   String // LOGIC GAME
+  config   Json // LOGIC GAME
 
   createdAt DateTime @default(now())
 }
