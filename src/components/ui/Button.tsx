@@ -1,25 +1,4 @@
-type ButtonVariant = "primary" | "secondary" | "success" | "danger" | "ghost";
-
-type ButtonSize = "sm" | "md" | "lg";
-
-type ButtonProps = {
-  children: React.ReactNode;
-
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-
-  fullWidth?: boolean;
-
-  disabled?: boolean;
-
-  scale?: 100 | 105 | 110 | 125 | 150;
-
-  onClick?: () => void;
-
-  className?: string;
-
-  type?: "button" | "submit" | "reset";
-};
+import { ButtonProps, ButtonSize, ButtonVariant } from "@/types/propType";
 
 const scaleClasses = {
   100: "hover:scale-100",
