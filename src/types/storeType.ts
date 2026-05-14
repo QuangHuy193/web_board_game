@@ -13,4 +13,5 @@ export type GameStore = {
   fetchGames: () => Promise<void>; // lấy ds game từ db
 
   setCurrentGame: (game: Game | null) => void;
+  setselectedGameConfig: (config: GameConfig | null) => void;
 };

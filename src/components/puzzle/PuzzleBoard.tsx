@@ -1,6 +1,7 @@
 import { createPieces } from "@/libs/function";
 import { PuzzlePiece } from "@/types/type";
-import { useRef, useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 export type PuzzleBoardProps = {
   size?: number;
@@ -9,7 +10,7 @@ export type PuzzleBoardProps = {
 
 const PuzzleBoard = ({
   size = 3,
-  imageSrc = "/test1.webp",
+  imageSrc = "/puzzle1.jpg",
 }: PuzzleBoardProps) => {
   const [storedPieces, setStoredPieces] = useState<PuzzlePiece[]>(() =>
     createPieces(size),
@@ -17,6 +18,7 @@ const PuzzleBoard = ({
   const [prevSize, setPrevSize] = useState(size);
   const [prevImageSrc, setPrevImageSrc] = useState(imageSrc);
   const dragIndex = useRef<number | null>(null);
+  const [previewTime, setPreviewTime] = useState(5);
 
   // tách biến pieces riêng để có thể gán ngay trong render này
   let pieces = storedPieces;
@@ -56,16 +58,58 @@ const PuzzleBoard = ({
     dragIndex.current = null;
   };
 
+  useEffect(() => {
+    if (previewTime <= 0) return;
+
+    const interval = setInterval(() => {
+      setPreviewTime((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [previewTime]);
+
   return (
-    <div className="flex flex-col items-center gap-4 p-4">
-      {/* thông báo thắng */}
+    <div className="relative flex flex-col items-center gap-4 p-4">
+      {/* Win */}
       {isWin && (
         <p className="text-lg font-semibold text-green-500">🎉 Hoàn thành!</p>
       )}
 
+      {/* Ảnh mẫu */}
       <div
-        className="grid w-full max-w-125 overflow-hidden rounded-xl border"
-        style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}
+        className="mb-4 flex flex-col items-center rounded-2xl bg-white/30 p-3 
+        shadow-lg backdrop-blur-md lg:absolute lg:right-24 lg:top-1/2 lg:-translate-y-1/2"
+      >
+        <p className="mb-2 font-semibold text-white">🖼 Ảnh mẫu</p>
+
+        <div className="relative">
+          <Image
+            width={140}
+            height={140}
+            alt="Ảnh mẫu"
+            src={imageSrc}
+            className={`rounded-xl shadow-md transition duration-700
+              ${previewTime <= 0 ? "blur-sm" : ""}`}
+          />
+
+          {/* overlay blur text */}
+        </div>
+
+        {/* countdown */}
+        <div
+          className="mt-3 rounded-full bg-linear-to-r from-pink-500 to-orange-400
+          px-4 py-1 text-sm font-bold text-white shadow-md"
+        >
+          {previewTime > 0 ? `⏳ Làm mờ sau ${previewTime}s` : "👀 Đã làm mờ"}
+        </div>
+      </div>
+
+      {/* Puzzle luôn ở giữa */}
+      <div
+        className="grid w-full max-w-125 overflow-hidden rounded-xl border shadow-xl"
+        style={{
+          gridTemplateColumns: `repeat(${size}, 1fr)`,
+        }}
       >
         {pieces.map((piece, slotIndex) => (
           <div
@@ -73,8 +117,7 @@ const PuzzleBoard = ({
             onPointerDown={() => handlePointerDown(slotIndex)}
             onPointerUp={() => handlePointerUp(slotIndex)}
             className={[
-              "aspect-square cursor-pointer select-none border border-black/10",
-              // highlight xanh nếu đúng vị trí
+              "aspect-square cursor-pointer select-none border border-black/10 transition",
               isCorrect(slotIndex, piece.id)
                 ? "ring-2 ring-inset ring-green-400/70"
                 : "",

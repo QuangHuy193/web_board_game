@@ -31,4 +31,5 @@ export const useGameStore = create<GameStore>((set) => ({
     }
   },
   setCurrentGame: (game) => set({ currentGame: game }),
+  setselectedGameConfig: (config) => set({ selectedGameConfig: config }),
 }));
