@@ -10,7 +10,7 @@ export type PuzzleBoardProps = {
 
 const PuzzleBoard = ({
   size = 3,
-  imageSrc = "/puzzle1.jpg",
+  imageSrc = "/48.jpg",
 }: PuzzleBoardProps) => {
   const [storedPieces, setStoredPieces] = useState<PuzzlePiece[]>(() =>
     createPieces(size),

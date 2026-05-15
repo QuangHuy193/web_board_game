@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Button from "../ui/Button";
+import { WEB_NAME } from "@/libs/constains";
 
 const Welcome = () => {
   const router = useRouter();
@@ -27,7 +28,7 @@ const Welcome = () => {
       "
     >
       {/* Curved text */}
-      <div className="relative w-175 h-50">
+      <div className="relative w-175 h-50 uppercase">
         <svg viewBox="0 0 700 220" className="absolute inset-0 w-full h-full">
           <path id="curve" d="M 40 180 Q 350 10 660 180" fill="transparent" />
 
@@ -44,7 +45,7 @@ const Welcome = () => {
               textAnchor="middle"
               textLength="580"
             >
-              CHÀO MỪNG ĐẾN VỚI COSMIC PUZZLE
+              CHÀO MỪNG ĐẾN VỚI {WEB_NAME}
             </textPath>
           </text>
         </svg>

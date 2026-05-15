@@ -1,26 +1,19 @@
+import bcrypt from "bcryptjs";
+
+import { cookies } from "next/headers";
+
 import { db } from "@/db/db";
 
-import bcrypt from "bcryptjs";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "@/libs/jwt";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const {
-      email,
-      password,
-    } = body;
-
-    if (!email || !password) {
-      return Response.json(
-        {
-          message: "Missing fields",
-        },
-        {
-          status: 400,
-        }
-      );
-    }
+    const { email, password } = body;
 
     const user = await db.user.findUnique({
       where: {
@@ -55,9 +48,43 @@ export async function POST(req: Request) {
       );
     }
 
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+
+    const accessToken =
+      generateAccessToken(payload);
+
+    const refreshToken =
+      generateRefreshToken(payload);
+
+    // save refresh token cookie
+    (
+      await cookies()
+    ).set(
+      "refreshToken",
+      refreshToken,
+      {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      }
+    );
+
     return Response.json({
-      message: "Login success",
-      user,
+      accessToken,
+
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        coin: user.coin,
+      },
     });
   } catch (error) {
     console.log(error);

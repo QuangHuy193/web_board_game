@@ -1,7 +1,7 @@
 "use client";
 
 import { useGameStore } from "@/stores/useGameStore";
-import PuzzleBoard from "../puzzle/PuzzleBoard";
+import PuzzleBoard from "../game/puzzle/PuzzleBoard";
 import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 const GamePlay = () => {

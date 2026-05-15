@@ -1,4 +1,4 @@
-import { Game, GameConfig } from "./modelType";
+import { Game, GameConfig, User } from "./modelType";
 
 // useGameStore
 export type GameStore = {
@@ -14,4 +14,22 @@ export type GameStore = {
 
   setCurrentGame: (game: Game | null) => void;
   setselectedGameConfig: (config: GameConfig | null) => void;
+};
+
+export type UserStore = {
+  user: User | null;
+
+  accessToken: string | null;
+
+  setUser: (user: User) => void;
+
+  setAccessToken: (token: string | null) => void;
+
+  logout: () => void;
+};
+
+export type OpenFormStore = {
+  openForm: "login" | "register" | "";
+
+  setopenForm: (form: "login" | "register" | "") => void;
 };

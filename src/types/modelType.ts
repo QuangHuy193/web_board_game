@@ -16,3 +16,12 @@ export type GameConfig = {
   config: object | null;
   createdAt?: Date;
 };
+
+// user
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  coin: number;
+};

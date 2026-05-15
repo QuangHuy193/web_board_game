@@ -12,25 +12,34 @@ const MenuGame = () => {
   useEffect(() => {
     fetchGames();
   }, [fetchGames]);
-console.log(currentGame);
+
   return (
-    <div>
+    <div className="h-screen">
+      
       {isLoadingGames ? (
         "đang tải..."
       ) : games.length === 0 ? (
         "không có trò chơi"
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {games.map((game: Game) => (
-            <div key={game.id} className="flex justify-center">
-              <GameItem game={game} />
-              {
-                
-                currentGame && <MenuGameDif gameDiffs={currentGame.configs}/>
-              }
-            </div>
-          ))}
-        </div>
+        <>
+          <div
+            className="
+          grid grid-cols-1
+          gap-6
+          sm:grid-cols-2
+          lg:grid-cols-4
+        "
+          >
+            {games.map((game: Game) => (
+              <div key={game.id} className="flex justify-center">
+                <GameItem game={game} />
+              </div>
+            ))}
+          </div>
+
+          {/* render 1 lần duy nhất */}
+          {currentGame && <MenuGameDif gameDiffs={currentGame.configs} />}
+        </>
       )}
     </div>
   );

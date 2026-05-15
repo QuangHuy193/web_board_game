@@ -1,6 +1,8 @@
 import { useGameStore } from "@/stores/useGameStore";
 import { GameConfig } from "@/types/modelType";
 import GameItemDif from "./GameItemDif";
+import { X } from "lucide-react";
+import CloseButton from "../ui/CloseButton ";
 
 type MenuGameDifProps = {
   gameDiffs: GameConfig[];
@@ -11,14 +13,7 @@ const MenuGameDif = ({ gameDiffs }: MenuGameDifProps) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-linear-to-br from-pink-500/40 via-purple-500/40 to-blue-500/40 backdrop-blur-md">
       <div className="relative w-[92%] max-w-md rounded-3xl border border-white/30 bg-white/80 p-6 shadow-2xl backdrop-blur-xl">
         {/* Nút đóng */}
-        <button
-          onClick={() => setCurrentGame(null)}
-          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full 
-        bg-linear-to-r from-red-400 to-pink-500 text-white shadow-md 
-        hover:scale-110 hover:rotate-90 transition cursor-pointer"
-        >
-          ✕
-        </button>
+        <CloseButton onClick={() => setCurrentGame(null)} />
 
         {/* Title */}
         <h2
