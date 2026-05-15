@@ -2,12 +2,14 @@
 
 import { WEB_NAME } from "@/libs/constains";
 import { useOpenForm } from "@/stores/useOpenForm";
-import { X } from "lucide-react";
 import { useState } from "react";
 import EyePassword from "../ui/EyePassword";
 import CloseButton from "../ui/CloseButton ";
+import { loginAPI } from "@/api/auth.api";
+import { useUserStore } from "@/stores/useUserStore";
 
 const LoginForm = () => {
+  const { setAccessToken, setUser } = useUserStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPass, setIsShowpass] = useState(false);
@@ -17,10 +19,16 @@ const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log({
-      email,
-      password,
-    });
+    try {
+      const data = await loginAPI({ email, password });
+      if (data.accessToken && data.user) {
+        setAccessToken(data.accessToken);
+        setUser(data.user);
+        setopenForm("")
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

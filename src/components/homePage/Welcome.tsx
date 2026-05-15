@@ -6,6 +6,7 @@ import { WEB_NAME } from "@/libs/constains";
 
 const Welcome = () => {
   const router = useRouter();
+ 
 
   const handleStart = () => {
     const token = localStorage.getItem("token");
@@ -60,7 +61,7 @@ const Welcome = () => {
         className="backdrop-blur-xl border border-white/20 px-10"
       >
         Bắt đầu hành trình nào!
-      </Button>
+      </Button>    
     </div>
   );
 };
