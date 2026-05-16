@@ -1,13 +1,26 @@
 "use client";
 
-import { Coins } from "lucide-react";
+import { Coins, LogOut } from "lucide-react";
 
 import { useUserStore } from "@/stores/useUserStore";
+import { openConfirm } from "@/libs/confirm";
 
 const UserName = () => {
-  const { user } = useUserStore();
+  const { user, setAccessToken, setUser } = useUserStore();
 
   if (!user) return null;
+
+  const handleLogout = async () => {
+    openConfirm({
+      title: "Đăng xuất?",
+      description: "Bạn sẽ cần đăng nhập lại",
+
+      onConfirm: () => {
+        setAccessToken(null);
+        setUser(null);
+      },
+    });
+  };
 
   return (
     <div
@@ -58,10 +71,15 @@ const UserName = () => {
         >
           <Coins size={14} />
 
-          <span>
-            {user.coin}
-          </span>
+          <span>{user.coin}</span>
         </div>
+      </div>
+      <div>
+        <LogOut
+          onClick={handleLogout}
+          className="m-1 cursor-pointer text-red-500 hover:scale-110"
+          size={20}
+        />
       </div>
     </div>
   );

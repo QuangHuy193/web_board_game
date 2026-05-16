@@ -1,4 +1,4 @@
-import { createPieces } from "@/libs/function";
+import { createPieces } from "@/libs/helper";
 import { PuzzlePiece } from "@/types/type";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";

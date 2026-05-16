@@ -1,8 +1,9 @@
 import bcrypt from "bcryptjs";
 
+// test@gmail.com
 async function main() {
   const hash = await bcrypt.hash(
-    "12345678",
+    "Test123456",
     10
   );
 

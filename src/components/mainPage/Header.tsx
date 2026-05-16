@@ -8,8 +8,7 @@ const Header = () => {
   const { setopenForm } = useOpenForm();
 
   return (
-    <div className="flex justify-between px-3 py-3">
-      <div>Menu trái</div>
+    <div className="flex justify-end px-3 py-3">    
       <div>
         {user ? (
           <UserName />

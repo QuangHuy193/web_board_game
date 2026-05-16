@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     if (!user) {
       return Response.json(
         {
-          message: "User not found",
+          message: "Tài khoản hoặc mật khẩu không chính xác!",
         },
         {
           status: 404,
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     if (!isMatch) {
       return Response.json(
         {
-          message: "Wrong password",
+          message: "Tài khoản hoặc mật khẩu không chính xác!",
         },
         {
           status: 400,
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
 
     return Response.json(
       {
-        message: "Internal server error",
+        message: "Lỗi máy chủ",
       },
       {
         status: 500,

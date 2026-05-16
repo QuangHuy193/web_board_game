@@ -21,7 +21,7 @@ export type UserStore = {
 
   accessToken: string | null;
 
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
 
   setAccessToken: (token: string | null) => void;
 
@@ -32,4 +32,25 @@ export type OpenFormStore = {
   openForm: "login" | "register" | "";
 
   setopenForm: (form: "login" | "register" | "") => void;
+};
+
+
+export type ConfirmDialogState = {
+  open: boolean;
+
+  title: string;
+
+  description?: string;
+
+  onConfirm?: () => void;
+
+  openDialog: (data: {
+    title: string;
+
+    description?: string;
+
+    onConfirm?: () => void;
+  }) => void;
+
+  closeDialog: () => void;
 };
