@@ -5,7 +5,11 @@ import { Coins, LogOut } from "lucide-react";
 import { useUserStore } from "@/stores/useUserStore";
 import { openConfirm } from "@/libs/confirm";
 
-const UserName = () => {
+type UserNameProps = {
+  displayCoin?: boolean;
+};
+
+const UserName = ({ displayCoin = false }: UserNameProps) => {
   const { user, setAccessToken, setUser } = useUserStore();
 
   if (!user) return null;
@@ -61,18 +65,19 @@ const UserName = () => {
         >
           {user.name}
         </p>
-
-        <div
-          className="
+        {displayCoin && (
+          <div
+            className="
           flex items-center gap-1
           text-xs font-semibold
           text-amber-300
         "
-        >
-          <Coins size={14} />
+          >
+            <Coins size={14} />
 
-          <span>{user.coin}</span>
-        </div>
+            <span>{user.coin}</span>
+          </div>
+        )}
       </div>
       <div>
         <LogOut

@@ -9,8 +9,10 @@ import { useState } from "react";
 import CloseButton from "../ui/CloseButton ";
 import EyePassword from "../ui/EyePassword";
 import { showSuccess } from "@/libs/toast";
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
+  const router = useRouter();
   const { setAccessToken, setUser } = useUserStore();
   const { setopenForm } = useOpenForm();
 
@@ -59,6 +61,9 @@ const LoginForm = () => {
       if (data.accessToken && data.user) {
         setAccessToken(data.accessToken);
         setUser(data.user);
+
+        router.push("/main");
+
         showSuccess("Đăng nhập thành công 🎉");
         setopenForm("");
       }

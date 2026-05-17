@@ -3,21 +3,19 @@
 import { useRouter } from "next/navigation";
 import Button from "../ui/Button";
 import { WEB_NAME } from "@/libs/constains";
+import { useUserStore } from "@/stores/useUserStore";
+import { useOpenForm } from "@/stores/useOpenForm";
 
 const Welcome = () => {
+  const { user } = useUserStore();
+  const { setopenForm } = useOpenForm();
   const router = useRouter();
- 
 
   const handleStart = () => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      router.push("/main");
-    } else {
-      //TODO hiện toast dạng thông tin khuyên đăng nhập
-      router.push("/main");
-    }
+    router.push("/main");
   };
+
+  
   return (
     <div
       className="
@@ -53,15 +51,28 @@ const Welcome = () => {
       </div>
 
       {/* Button */}
-      <Button
-        onClick={handleStart}
-        scale={110}
-        variant="ghost"
-        size="lg"
-        className="backdrop-blur-xl border border-white/20 px-10"
-      >
-        Bắt đầu hành trình nào!
-      </Button>    
+      {user ? (
+        <Button
+          onClick={handleStart}
+          scale={110}
+          variant="ghost"
+          size="lg"
+          className="backdrop-blur-xl border border-white/20 px-10"
+        >
+          Bắt đầu hành trình nào!
+        </Button>
+      ) : (
+        <Button
+          variant="primary"
+          size="lg"
+          scale={105}
+          onClick={() => {
+            setopenForm("login");
+          }}
+        >
+          Đăng nhập
+        </Button>
+      )}
     </div>
   );
 };

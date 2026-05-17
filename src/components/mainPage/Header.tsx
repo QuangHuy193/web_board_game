@@ -11,7 +11,7 @@ const Header = () => {
     <div className="flex justify-end px-3 py-3">    
       <div>
         {user ? (
-          <UserName />
+          <UserName displayCoin={true}/>
         ) : (
           <Button
             onClick={() => {
