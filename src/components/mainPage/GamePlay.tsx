@@ -4,6 +4,8 @@ import { useGameStore } from "@/stores/useGameStore";
 import PuzzleBoard from "../game/puzzle/PuzzleBoard";
 import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
+import { getImageInPuzzleAPI } from "@/api/game.api";
+
 const GamePlay = () => {
   const {
     currentGame,
@@ -11,8 +13,20 @@ const GamePlay = () => {
     setCurrentGame,
     setselectedGameConfig,
   } = useGameStore();
+  const [imagePuzzle, setImagePuzzle] = useState("/1.jpg");
 
   const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    const getPuzzleImageApi = async () => {
+      const data = await getImageInPuzzleAPI();
+
+      setImagePuzzle(data.link);
+    };
+    if (currentGame?.name === "Xếp hình") {
+      getPuzzleImageApi();
+    }
+  }, [currentGame]);
 
   // timer
   useEffect(() => {
@@ -80,6 +94,7 @@ const GamePlay = () => {
 
       {currentGame?.name === "Xếp hình" && (
         <PuzzleBoard
+          imageSrc={imagePuzzle}
           size={
             (
               selectedGameConfig?.config as {

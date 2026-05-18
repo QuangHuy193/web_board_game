@@ -3,15 +3,11 @@
 import * as Dialog from "@radix-ui/react-dialog";
 
 import { useConfirmDialog } from "@/stores/useConfirmDialog";
+import { Coins } from "lucide-react";
 
 const ConfirmDialog = () => {
-  const {
-    open,
-    title,
-    description,
-    onConfirm,
-    closeDialog,
-  } = useConfirmDialog();
+  const { open, title, reward, description, onConfirm, closeDialog } =
+    useConfirmDialog();
 
   return (
     <Dialog.Root
@@ -39,7 +35,7 @@ const ConfirmDialog = () => {
           w-full max-w-md
           -translate-x-1/2 -translate-y-1/2
 
-          rounded-[32px]
+          rounded-4xl
           border border-white/10
 
           bg-[linear-gradient(135deg,#2a2d45,#1b1d2e)]
@@ -60,11 +56,22 @@ const ConfirmDialog = () => {
             {title}
           </Dialog.Title>
 
+          {/* phần thưởng nếu có */}
+          {reward && (
+            <Dialog.Description className="my-3 text-sm flex items-center gap-2">
+              <span className="text-green-400">Phần thưởng: </span>
+              <span className="text-yellow-400 flex items-center">
+                + {reward}
+                <Coins size={14} />
+              </span>
+            </Dialog.Description>
+          )}
+
           {/* desc */}
           {description && (
             <Dialog.Description
               className="
-              mt-3
+              
               text-sm
               text-gray-300
             "

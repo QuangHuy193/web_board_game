@@ -1,4 +1,7 @@
+import Loader from "@/components/ui/Loader";
+import { openConfirm } from "@/libs/confirm";
 import { createPieces } from "@/libs/helper";
+import { useGameStore } from "@/stores/useGameStore";
 import { PuzzlePiece } from "@/types/type";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -8,10 +11,9 @@ export type PuzzleBoardProps = {
   imageSrc?: string;
 };
 
-const PuzzleBoard = ({
-  size = 3,
-  imageSrc = "/48.jpg",
-}: PuzzleBoardProps) => {
+const PuzzleBoard = ({ size = 0, imageSrc = "" }: PuzzleBoardProps) => {
+  const { selectedGameConfig } = useGameStore();
+
   const [storedPieces, setStoredPieces] = useState<PuzzlePiece[]>(() =>
     createPieces(size),
   );
@@ -68,14 +70,25 @@ const PuzzleBoard = ({
     return () => clearInterval(interval);
   }, [previewTime]);
 
-  return (
-    <div className="relative flex flex-col items-center gap-4 p-4">
-      {/* Win */}
-      {isWin && (
-        <p className="text-lg font-semibold text-green-500">🎉 Hoàn thành!</p>
-      )}
+  useEffect(() => {
+    if (isWin) {
+      openConfirm({
+        title: "🎉 Hoàn thành!",
 
-      {/* Ảnh mẫu */}
+        reward: selectedGameConfig?.coin,
+
+        description: "Bạn đã hoàn thành màn chơi, có muốn chơi tiếp không?",
+
+        onConfirm: () => {
+          //TODO
+        },
+      });
+    }
+  }, [isWin, selectedGameConfig]);
+
+  return imageSrc !== "" ? (
+    <div className="relative flex flex-col items-center gap-4 p-4">
+      {/* Ảnh mẫu */}     
       <div
         className="mb-4 flex flex-col items-center rounded-2xl bg-white/30 p-3 
         shadow-lg backdrop-blur-md lg:absolute lg:right-24 lg:top-1/2 lg:-translate-y-1/2"
@@ -135,6 +148,8 @@ const PuzzleBoard = ({
         ))}
       </div>
     </div>
+  ) : (
+    <Loader/>
   );
 };
 

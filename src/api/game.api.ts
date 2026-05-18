@@ -6,3 +6,10 @@ export const getGamesAPI = async () => {
 
   return res.data;
 };
+
+// lấy ảnh ngẫu nhiên cho game puzzle
+export const getImageInPuzzleAPI = async () => {
+  const res = await api.get("/api/games/puzzle/random");
+
+  return res.data;
+};

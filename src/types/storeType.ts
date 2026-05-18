@@ -34,7 +34,6 @@ export type OpenFormStore = {
   setopenForm: (form: "login" | "register" | "") => void;
 };
 
-
 export type ConfirmDialogState = {
   open: boolean;
 
@@ -42,12 +41,16 @@ export type ConfirmDialogState = {
 
   description?: string;
 
+  reward?: number;
+
   onConfirm?: () => void;
 
   openDialog: (data: {
     title: string;
 
     description?: string;
+
+    reward?: number;
 
     onConfirm?: () => void;
   }) => void;

@@ -10,11 +10,14 @@ export const useConfirmDialog =
 
     description: "",
 
+    reward: 0,
+
     onConfirm: undefined,
 
     openDialog: ({
       title,
       description,
+      reward,
       onConfirm,
     }) =>
       set({
@@ -23,6 +26,8 @@ export const useConfirmDialog =
         title,
 
         description,
+
+        reward,
 
         onConfirm,
       }),

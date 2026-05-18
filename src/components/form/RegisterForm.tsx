@@ -8,6 +8,7 @@ import { useState } from "react";
 import CloseButton from "../ui/CloseButton ";
 import EyePassword from "../ui/EyePassword";
 import { registerAPI } from "@/api/auth.api";
+import { showSuccess } from "@/libs/toast";
 
 const RegisterForm = () => {
   const { setopenForm } = useOpenForm();
@@ -63,9 +64,11 @@ const RegisterForm = () => {
       setLoading(true);
       const { confirmPassword, ...formData } = result.data;
       const data = await registerAPI(formData);
-      console.log(data);
 
-      setopenForm("login");
+      if (data) {
+        showSuccess("Đăng ký thành công 🎉");
+        setopenForm("login");
+      }
     } catch (error: any) {
       setErrors({
         general: error?.response?.data?.message || "Đăng ký thất bại",
