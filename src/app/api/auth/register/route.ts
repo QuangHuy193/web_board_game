@@ -1,4 +1,5 @@
 import { db } from "@/db/db";
+import { userSelect } from "@/libs/constains";
 
 import bcrypt from "bcryptjs";
 
@@ -6,11 +7,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const {
-      name,
-      email,
-      password,
-    } = body;
+    const { name, email, password } = body;
 
     if (!name || !email || !password) {
       return Response.json(
@@ -19,7 +16,7 @@ export async function POST(req: Request) {
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
@@ -43,14 +40,11 @@ export async function POST(req: Request) {
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
-    const hashedPassword = await bcrypt.hash(
-      password,
-      10
-    );
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await db.user.create({
       data: {
@@ -58,6 +52,7 @@ export async function POST(req: Request) {
         email,
         password: hashedPassword,
       },
+      select: userSelect,
     });
 
     return Response.json(user);
@@ -70,7 +65,7 @@ export async function POST(req: Request) {
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }

@@ -9,7 +9,7 @@ import { useState } from "react";
 import CloseButton from "../ui/CloseButton ";
 import EyePassword from "../ui/EyePassword";
 import { showSuccess } from "@/libs/toast";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const router = useRouter();

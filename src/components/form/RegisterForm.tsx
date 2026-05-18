@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import CloseButton from "../ui/CloseButton ";
 import EyePassword from "../ui/EyePassword";
+import { registerAPI } from "@/api/auth.api";
 
 const RegisterForm = () => {
   const { setopenForm } = useOpenForm();
@@ -17,14 +18,11 @@ const RegisterForm = () => {
 
   const [password, setPassword] = useState("");
 
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [isShowPass, setIsShowpass] =
-    useState(false);
+  const [isShowPass, setIsShowpass] = useState(false);
 
-  const [isShowConfirmPass, setIsShowConfirmPass] =
-    useState(false);
+  const [isShowConfirmPass, setIsShowConfirmPass] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -36,9 +34,7 @@ const RegisterForm = () => {
     general?: string;
   }>({});
 
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     setErrors({});
@@ -51,15 +47,13 @@ const RegisterForm = () => {
     });
 
     if (!result.success) {
-      const fieldErrors =
-        result.error.flatten().fieldErrors;
+      const fieldErrors = result.error.flatten().fieldErrors;
 
       setErrors({
         name: fieldErrors.name?.[0],
         email: fieldErrors.email?.[0],
         password: fieldErrors.password?.[0],
-        confirmPassword:
-          fieldErrors.confirmPassword?.[0],
+        confirmPassword: fieldErrors.confirmPassword?.[0],
       });
 
       return;
@@ -67,17 +61,14 @@ const RegisterForm = () => {
 
     try {
       setLoading(true);
-
-      console.log(result.data);
-
-      // call register api here
+      const { confirmPassword, ...formData } = result.data;
+      const data = await registerAPI(formData);
+      console.log(data);
 
       setopenForm("login");
     } catch (error: any) {
       setErrors({
-        general:
-          error?.response?.data?.message ||
-          "Đăng ký thất bại",
+        general: error?.response?.data?.message || "Đăng ký thất bại",
       });
     } finally {
       setLoading(false);
@@ -160,9 +151,7 @@ const RegisterForm = () => {
           />
 
           {errors.name && (
-            <p className="mt-2 text-sm text-red-500">
-              {errors.name}
-            </p>
+            <p className="mt-2 text-sm text-red-500">{errors.name}</p>
           )}
         </div>
 
@@ -196,9 +185,7 @@ const RegisterForm = () => {
           />
 
           {errors.email && (
-            <p className="mt-2 text-sm text-red-500">
-              {errors.email}
-            </p>
+            <p className="mt-2 text-sm text-red-500">{errors.email}</p>
           )}
         </div>
 
@@ -218,9 +205,7 @@ const RegisterForm = () => {
               type={isShowPass ? "text" : "password"}
               placeholder="Nhập mật khẩu..."
               value={password}
-              onChange={(e) =>
-                setPassword(e.target.value)
-              }
+              onChange={(e) => setPassword(e.target.value)}
               className={`
                 w-full rounded-2xl border
                 bg-white/70 px-4 py-3 pr-12
@@ -234,16 +219,11 @@ const RegisterForm = () => {
               `}
             />
 
-            <EyePassword
-              isShow={isShowPass}
-              setIsShow={setIsShowpass}
-            />
+            <EyePassword isShow={isShowPass} setIsShow={setIsShowpass} />
           </div>
 
           {errors.password && (
-            <p className="mt-2 text-sm text-red-500">
-              {errors.password}
-            </p>
+            <p className="mt-2 text-sm text-red-500">{errors.password}</p>
           )}
         </div>
 
@@ -260,16 +240,10 @@ const RegisterForm = () => {
 
           <div className="relative">
             <input
-              type={
-                isShowConfirmPass
-                  ? "text"
-                  : "password"
-              }
+              type={isShowConfirmPass ? "text" : "password"}
               placeholder="Nhập lại mật khẩu..."
               value={confirmPassword}
-              onChange={(e) =>
-                setConfirmPassword(e.target.value)
-              }
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className={`
                 w-full rounded-2xl border
                 bg-white/70 px-4 py-3 pr-12
@@ -311,9 +285,7 @@ const RegisterForm = () => {
           disabled:opacity-70
         "
         >
-          {loading
-            ? "Đang đăng ký..."
-            : "🚀 Đăng ký"}
+          {loading ? "Đang đăng ký..." : "🚀 Đăng ký"}
         </button>
 
         {/* login */}
@@ -323,9 +295,7 @@ const RegisterForm = () => {
           gap-2 text-sm
         "
         >
-          <p className="text-gray-700">
-            Đã có tài khoản?
-          </p>
+          <p className="text-gray-700">Đã có tài khoản?</p>
 
           <button
             type="button"
