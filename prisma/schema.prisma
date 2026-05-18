@@ -78,4 +78,13 @@ model GameHistory {
   createdAt DateTime @default(now())
 }
 
+model PuzzleImage {
+  id        String @id @default(cuid())
+  link      String
+
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+}
+
  

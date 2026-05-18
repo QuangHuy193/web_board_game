@@ -4,6 +4,7 @@ import { Coins, LogOut } from "lucide-react";
 
 import { useUserStore } from "@/stores/useUserStore";
 import { openConfirm } from "@/libs/confirm";
+import { useRouter } from "next/navigation";
 
 type UserNameProps = {
   displayCoin?: boolean;
@@ -11,6 +12,7 @@ type UserNameProps = {
 
 const UserName = ({ displayCoin = false }: UserNameProps) => {
   const { user, setAccessToken, setUser } = useUserStore();
+  const router = useRouter();
 
   if (!user) return null;
 
@@ -22,6 +24,7 @@ const UserName = ({ displayCoin = false }: UserNameProps) => {
       onConfirm: () => {
         setAccessToken(null);
         setUser(null);
+        router.push("/")
       },
     });
   };

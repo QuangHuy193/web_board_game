@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import AuthGuard from "@/components/layouts/AuthGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
+        <AuthGuard>{children}</AuthGuard>
+
         <Toaster
           position="top-right"
           richColors
@@ -41,10 +43,11 @@ export default function RootLayout({
               toast: "rounded-2xl border border-white/20 backdrop-blur-xl",
               title: "text-sm font-semibold",
               description: "text-xs opacity-90",
+              closeButton: `-right-3! top-0! left-auto!`,
             },
           }}
         />
-         <ConfirmDialog />
+        <ConfirmDialog />
       </body>
     </html>
   );
