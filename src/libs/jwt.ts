@@ -27,3 +27,12 @@ export const verifyRefreshToken = (
 ) => {
   return jwt.verify(token, REFRESH_SECRET);
 };
+
+export const verifyAccessToken = (
+  token: string
+) => {
+  return jwt.verify(
+    token,
+    ACCESS_SECRET
+  );
+};

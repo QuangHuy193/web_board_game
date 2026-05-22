@@ -5,13 +5,15 @@ import { Coins, LogOut } from "lucide-react";
 import { useUserStore } from "@/stores/useUserStore";
 import { openConfirm } from "@/libs/confirm";
 import { useRouter } from "next/navigation";
+import { showError } from "@/libs/toast";
+import { logoutAPI } from "@/api/auth.api";
 
 type UserNameProps = {
   displayCoin?: boolean;
 };
 
 const UserName = ({ displayCoin = false }: UserNameProps) => {
-  const { user, setAccessToken, setUser } = useUserStore();
+  const { user, logout } = useUserStore();
   const router = useRouter();
 
   if (!user) return null;
@@ -21,10 +23,16 @@ const UserName = ({ displayCoin = false }: UserNameProps) => {
       title: "Đăng xuất?",
       description: "Bạn sẽ cần đăng nhập lại",
 
-      onConfirm: () => {
-        setAccessToken(null);
-        setUser(null);
-        router.push("/")
+      onConfirm: async () => {
+        try {
+          await logoutAPI();
+        } catch (error) {
+          showError("Có lỗi xảy ra vui lòng thử lại sau!");
+        } finally {
+          logout();
+          showError("Đã đăng xuất!");
+          router.push("/");
+        }
       },
     });
   };

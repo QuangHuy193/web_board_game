@@ -5,6 +5,7 @@ import Button from "../ui/Button";
 import { WEB_NAME } from "@/libs/constains";
 import { useUserStore } from "@/stores/useUserStore";
 import { useOpenForm } from "@/stores/useOpenForm";
+import { refreshTokenAPI } from "@/api/auth.api";
 
 const Welcome = () => {
   const { user } = useUserStore();
@@ -15,7 +16,12 @@ const Welcome = () => {
     router.push("/main");
   };
 
-  
+  const handleTest = async () => {
+    const res = await refreshTokenAPI();
+
+    console.log("axios", res);
+  };
+
   return (
     <div
       className="
@@ -27,7 +33,8 @@ const Welcome = () => {
       "
     >
       {/* Curved text */}
-      <div className="relative w-175 h-50 uppercase">
+      <div className="relative w-175 h-50 uppercase">        
+        
         <svg viewBox="0 0 700 220" className="absolute inset-0 w-full h-full">
           <path id="curve" d="M 40 180 Q 350 10 660 180" fill="transparent" />
 
@@ -61,7 +68,7 @@ const Welcome = () => {
         >
           Bắt đầu hành trình nào!
         </Button>
-      ) : (
+      ) : (        
         <Button
           variant="primary"
           size="lg"

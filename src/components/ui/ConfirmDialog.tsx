@@ -6,7 +6,7 @@ import { useConfirmDialog } from "@/stores/useConfirmDialog";
 import { Coins } from "lucide-react";
 
 const ConfirmDialog = () => {
-  const { open, title, reward, description, onConfirm, closeDialog } =
+  const { open, title, reward, description, onConfirm, closeDialog, onCancel } =
     useConfirmDialog();
 
   return (
@@ -82,6 +82,11 @@ const ConfirmDialog = () => {
 
           {/* buttons */}
           <div
+            onClick={() => {
+              onCancel?.();
+
+              closeDialog();
+            }}
             className="
             mt-8 flex justify-end gap-3
           "

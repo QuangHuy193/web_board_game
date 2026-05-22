@@ -1,58 +1,95 @@
 "use client";
 
-import { useUserStore } from "@/stores/useUserStore";
-
-import {
-  usePathname,
-  useRouter,
-} from "next/navigation";
-
 import { useEffect, useState } from "react";
 
-const AuthGuard = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+import { usePathname, useRouter } from "next/navigation";
+
+import Loader from "@/components/ui/Loader";
+
+import { useUserStore } from "@/stores/useUserStore";
+import { refreshTokenAPI } from "@/api/auth.api";
+import { showError } from "@/libs/toast";
+
+const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   const pathname = usePathname();
 
-  const user = useUserStore(
-    (state) => state.user
-  );
+  const { user, accessToken, isHydrated, setUser, setAccessToken, logout } =
+    useUserStore();
 
-  const [mounted, setMounted] =
-    useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
 
   const publicRoutes = ["/"];
 
-  const isPublicRoute =
-    publicRoutes.includes(pathname);
+  const isPublicRoute = publicRoutes.includes(pathname);
 
   useEffect(() => {
-    if (
-      mounted &&
-      !isPublicRoute &&
-      !user
-    ) {
-      router.replace("/");
-    }
+    if (!isHydrated) return;
+
+    const refreshLogin = async () => {
+      try {
+        // có token rồi
+        if (accessToken) {
+          setIsLoading(false);
+
+          return;
+        }
+
+        // không có user
+        if (!user) {
+          setIsLoading(false);
+
+          if (!isPublicRoute) {
+            router.replace("/");
+          }
+
+          return;
+        }
+
+        // gọi refresh
+        const res = await refreshTokenAPI();
+
+        setAccessToken(res.accessToken);
+
+        setUser(res.user);
+      } catch (error) {
+        logout();
+
+        if (!isPublicRoute) {
+          showError("Phiên đăng nhập đã hết hạn!");
+          router.replace("/");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    refreshLogin();
   }, [
-    mounted,
+    accessToken,
+    isHydrated,
     isPublicRoute,
-    user,
+    logout,
     router,
+    setAccessToken,
+    setUser,
+    user,
   ]);
 
-  if (!mounted) return null;
+  // zustand chưa hydrate
+  if (!isHydrated) {
+    return <Loader />;
+  }
 
+  // loading refresh
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  // private route chưa login
   if (!isPublicRoute && !user) {
-    return null;
+    return <Loader />;
   }
 
   return children;

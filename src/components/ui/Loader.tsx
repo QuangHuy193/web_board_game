@@ -67,16 +67,18 @@ const Loader = ({ text }: LoaderProps) => {
             "
           ></div>
         </div>
-        <div
-          className="mt-3 bg-linear-to-r rounded-full   text-sm
+        {text && (
+          <div
+            className="mt-3 bg-linear-to-r rounded-full   text-sm
               font-extrabold
               tracking-wider
               text-white px-2 py-1
               from-pink-500
               to-purple-500"
-        >
-          {text}
-        </div>
+          >
+            {text}
+          </div>
+        )}
       </div>
     </div>
   );

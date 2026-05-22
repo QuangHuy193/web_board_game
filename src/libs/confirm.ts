@@ -8,6 +8,8 @@ type Props = {
   reward?: number;
 
   onConfirm?: () => void;
+
+  onCancel?: () => void;
 };
 
 export const openConfirm = ({
@@ -15,11 +17,13 @@ export const openConfirm = ({
   description,
   reward,
   onConfirm,
+  onCancel,
 }: Props) => {
   useConfirmDialog.getState().openDialog({
     title,
     description,
     reward,
     onConfirm,
+    onCancel,
   });
 };

@@ -20,3 +20,4 @@ export const createPieces = (size: number): PuzzlePiece[] => {
   }
   return shufflePieces(temp);
 };
+

@@ -15,23 +15,27 @@ export async function POST(req: Request) {
 
     const { email, password } = body;
 
+    // tìm user
     const user = await db.user.findUnique({
       where: {
         email,
       },
     });
 
+    // sai email hoặc password
     if (!user) {
       return Response.json(
         {
-          message: "Tài khoản hoặc mật khẩu không chính xác!",
+          message:
+            "Tài khoản hoặc mật khẩu không chính xác!",
         },
         {
-          status: 404,
+          status: 401,
         }
       );
     }
 
+    // compare password
     const isMatch = await bcrypt.compare(
       password,
       user.password
@@ -40,25 +44,46 @@ export async function POST(req: Request) {
     if (!isMatch) {
       return Response.json(
         {
-          message: "Tài khoản hoặc mật khẩu không chính xác!",
+          message:
+            "Tài khoản hoặc mật khẩu không chính xác!",
         },
         {
-          status: 400,
+          status: 401,
         }
       );
     }
 
+    // payload
     const payload = {
       id: user.id,
       email: user.email,
       role: user.role,
     };
 
+    // generate token
     const accessToken =
       generateAccessToken(payload);
 
     const refreshToken =
       generateRefreshToken(payload);
+
+    // lưu session DB
+    await db.session.create({
+      data: {
+        userId: user.id,
+
+        refreshToken,
+
+        expiresAt: new Date(
+          Date.now() +
+            1000 *
+              60 *
+              60 *
+              24 *
+              7
+        ),
+      },
+    });
 
     // save refresh token cookie
     (
@@ -68,10 +93,17 @@ export async function POST(req: Request) {
       refreshToken,
       {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+
+        secure:
+          process.env.NODE_ENV ===
+          "production",
+
+        sameSite: "lax",
+
         path: "/",
-        maxAge: 60 * 60 * 24 * 7,
+
+        maxAge:
+          60 * 60 * 24 * 7,
       }
     );
 

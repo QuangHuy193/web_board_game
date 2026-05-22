@@ -1,7 +1,9 @@
+import { addCoinAPI } from "@/api/user.api";
 import Loader from "@/components/ui/Loader";
 import { openConfirm } from "@/libs/confirm";
 import { createPieces } from "@/libs/helper";
 import { useGameStore } from "@/stores/useGameStore";
+import { useUserStore } from "@/stores/useUserStore";
 import { PuzzlePiece } from "@/types/type";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -12,7 +14,9 @@ export type PuzzleBoardProps = {
 };
 
 const PuzzleBoard = ({ size = 0, imageSrc = "" }: PuzzleBoardProps) => {
-  const { selectedGameConfig } = useGameStore();
+  const { setUser } = useUserStore();
+  const { selectedGameConfig, setCurrentGame, setselectedGameConfig } =
+    useGameStore();
 
   const [storedPieces, setStoredPieces] = useState<PuzzlePiece[]>(() =>
     createPieces(size),
@@ -71,7 +75,11 @@ const PuzzleBoard = ({ size = 0, imageSrc = "" }: PuzzleBoardProps) => {
   }, [previewTime]);
 
   useEffect(() => {
-    if (isWin) {
+    const handleWin = async () => {
+      if (selectedGameConfig?.coin) {
+        const res = await addCoinAPI({ coin: selectedGameConfig?.coin });
+        setUser(res);
+      }
       openConfirm({
         title: "🎉 Hoàn thành!",
 
@@ -79,16 +87,24 @@ const PuzzleBoard = ({ size = 0, imageSrc = "" }: PuzzleBoardProps) => {
 
         description: "Bạn đã hoàn thành màn chơi, có muốn chơi tiếp không?",
 
-        onConfirm: () => {
-          //TODO
+        onConfirm: async () => {
+          // TODO chơi tiếp hoặc hủy
+        },
+        onCancel: () => {
+          setCurrentGame(null);
+          setselectedGameConfig(null);
         },
       });
+    };
+
+    if (isWin) {
+      handleWin();
     }
-  }, [isWin, selectedGameConfig]);
+  }, [isWin, selectedGameConfig, setUser]);
 
   return imageSrc !== "" ? (
     <div className="relative flex flex-col items-center gap-4 p-4">
-      {/* Ảnh mẫu */}     
+      {/* Ảnh mẫu */}
       <div
         className="mb-4 flex flex-col items-center rounded-2xl bg-white/30 p-3 
         shadow-lg backdrop-blur-md lg:absolute lg:right-24 lg:top-1/2 lg:-translate-y-1/2"
@@ -149,7 +165,7 @@ const PuzzleBoard = ({ size = 0, imageSrc = "" }: PuzzleBoardProps) => {
       </div>
     </div>
   ) : (
-    <Loader/>
+    <Loader />
   );
 };
 

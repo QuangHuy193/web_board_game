@@ -10,6 +10,13 @@ export const useUserStore = create<UserStore>()(
 
       accessToken: null,
 
+      isHydrated: false,
+
+      setHydrated: (value) =>
+        set({
+          isHydrated: value,
+        }),
+
       setUser: (user) =>
         set({
           user,
@@ -32,6 +39,9 @@ export const useUserStore = create<UserStore>()(
       partialize: (state) => ({
         user: state.user,
       }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated(true);
+      },
     },
   ),
 );

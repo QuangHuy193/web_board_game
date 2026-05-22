@@ -1,39 +1,36 @@
 import { ConfirmDialogState } from "@/types/storeType";
 import { create } from "zustand";
 
+export const useConfirmDialog = create<ConfirmDialogState>((set) => ({
+  open: false,
 
-export const useConfirmDialog =
-  create<ConfirmDialogState>((set) => ({
-    open: false,
+  title: "",
 
-    title: "",
+  description: "",
 
-    description: "",
+  reward: 0,
 
-    reward: 0,
+  onConfirm: undefined,
 
-    onConfirm: undefined,
+  onCancel: undefined,
 
-    openDialog: ({
+  openDialog: ({ title, description, reward, onConfirm, onCancel }) =>
+    set({
+      open: true,
+
       title,
+
       description,
+
       reward,
+
       onConfirm,
-    }) =>
-      set({
-        open: true,
 
-        title,
+      onCancel,
+    }),
 
-        description,
-
-        reward,
-
-        onConfirm,
-      }),
-
-    closeDialog: () =>
-      set({
-        open: false,
-      }),
-  }));
+  closeDialog: () =>
+    set({
+      open: false,
+    }),
+}));

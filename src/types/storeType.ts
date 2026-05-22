@@ -21,6 +21,10 @@ export type UserStore = {
 
   accessToken: string | null;
 
+  isHydrated: boolean;
+
+  setHydrated: (value: boolean) => void;
+
   setUser: (user: User | null) => void;
 
   setAccessToken: (token: string | null) => void;
@@ -45,6 +49,8 @@ export type ConfirmDialogState = {
 
   onConfirm?: () => void;
 
+  onCancel?: () => void;
+
   openDialog: (data: {
     title: string;
 
@@ -53,6 +59,8 @@ export type ConfirmDialogState = {
     reward?: number;
 
     onConfirm?: () => void;
+
+    onCancel?: () => void;
   }) => void;
 
   closeDialog: () => void;

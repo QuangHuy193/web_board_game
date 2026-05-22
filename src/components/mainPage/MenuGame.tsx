@@ -5,6 +5,7 @@ import { Game } from "@/types/modelType";
 import { useEffect } from "react";
 import GameItem from "./GameItem";
 import MenuGameDif from "./MenuGameDif";
+import Loader from "../ui/Loader";
 
 const MenuGame = () => {
   const { games, isLoadingGames, fetchGames, currentGame } = useGameStore();
@@ -15,9 +16,8 @@ const MenuGame = () => {
 
   return (
     <div className="h-screen">
-      
       {isLoadingGames ? (
-        "đang tải..."
+        <Loader text="Đang tải trò chơi..." />
       ) : games.length === 0 ? (
         "không có trò chơi"
       ) : (

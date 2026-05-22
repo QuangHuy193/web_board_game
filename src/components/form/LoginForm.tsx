@@ -205,6 +205,11 @@ const LoginForm = () => {
           {loading ? "Đang đăng nhập..." : "🚀 Đăng nhập"}
         </button>
 
+        <div>
+          <div>huy@gmail.com</div>
+          <div>Huy123456</div>
+        </div>
+
         {/* register */}
         <div
           className="
